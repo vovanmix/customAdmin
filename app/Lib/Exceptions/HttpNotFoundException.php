@@ -2,8 +2,7 @@
 
 namespace Vovanmix\CustomAdmin\Lib\Exceptions;
 
-use Exception;
-
-class HttpNotFoundException extends Exception{
-
+class HttpNotFoundException extends HttpException{
+    protected $message = 'This page was not found';
+    protected $statusCode = 404;
 }

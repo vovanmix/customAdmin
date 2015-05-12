@@ -6,7 +6,7 @@ use Vovanmix\CustomAdmin\Lib\Exceptions\HttpNotFoundException;
 use Vovanmix\CustomAdmin\Lib\Http\Response;
 use Vovanmix\CustomAdmin\Lib\Http\Route;
 use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
-use Exception;
+use Vovanmix\CustomAdmin\Lib\Exceptions\HttpException;
 
 /**
  * Class Container
@@ -78,7 +78,7 @@ class Container{
         try {
             $response = $this->callController($route);
         }
-        catch(Exception $e){
+        catch(HttpException $e){
             $response = $this->handleException($e);
         }
 
@@ -87,10 +87,13 @@ class Container{
     }
 
     /**
-     * @param Exception $e
+     * @param HttpException $e
      * @return mixed
      */
     private function handleException($e){
+        $this->response->setStatus($e->getStatusCode());
+        return $this->response->getStatus().$e->getMessage();
+//        return $e->getMessage();
         //todo
     }
 
