@@ -1,0 +1,19 @@
+filter:
+    paths:
+        - 'src/*'
+    excluded_paths:
+        - 'vendor/*'
+        - 'tests/*'
+
+before_commands:
+    - 'composer install --no-interaction --no-scripts'
+
+build:
+    tests:
+        override:
+            -
+                command: 'phpunit tests'
+application:
+    environment:
+        php:
+            version: 5.4.28
