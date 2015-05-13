@@ -56,7 +56,7 @@ class DependencyInjector{
     /**
      * @param Container $container
      */
-    function setContainer(&$container){
+    public function setContainer(&$container){
         $this->container = $container;
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var array $categories;
  * @var \Vovanmix\CustomAdmin\Models\Category $category

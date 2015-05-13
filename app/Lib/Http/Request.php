@@ -19,27 +19,27 @@ class Request{
         $this->server = filter_input_array(INPUT_SERVER);
     }
 
-    function setInputGet($get){
+    public function setInputGet($get){
         $this->get = $get;
     }
-    function setInputPost($post){
+    public function setInputPost($post){
         $this->post = $post;
     }
-    function setInputServer($server){
+    public function setInputServer($server){
         $this->server = $server;
     }
 
     /**
      * @return array
      */
-    function inputGetAll(){
+    public function inputGetAll(){
         return $this->get;
     }
 
     /**
      * @return array
      */
-    function inputPostAll(){
+    public function inputPostAll(){
         return $this->post;
     }
 
@@ -47,7 +47,7 @@ class Request{
      * @param string $name
      * @return mixed
      */
-    function inputGet($name){
+    public function inputGet($name){
         return isset($this->get[$name]) ? $this->get[$name] : NULL;
     }
 
@@ -55,7 +55,7 @@ class Request{
      * @param string $name
      * @return mixed
      */
-    function inputPost($name){
+    public function inputPost($name){
         return isset($this->post[$name]) ? $this->post[$name] : NULL;
     }
 
@@ -63,14 +63,14 @@ class Request{
      * @param string $name
      * @return mixed
      */
-    function inputFile($name){
+    public function inputFile($name){
         return isset($this->files[$name]) ? $this->files[$name] : NULL;
     }
 
     /**
      * @return array
      */
-    function getServerAll(){
+    public function getServerAll(){
         return $this->server;
     }
 
@@ -78,14 +78,14 @@ class Request{
      * @param string $name
      * @return string
      */
-    function getServer($name){
+    public function getServer($name){
         return isset($this->server[$name]) ? $this->server[$name] : NULL;
     }
 
     /**
      * @return string
      */
-    function getUri(){
+    public function getUri(){
         return $this->getServer('REQUEST_URI');
     }
 

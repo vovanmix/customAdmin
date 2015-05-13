@@ -15,7 +15,7 @@ class Orm{
     private $connector;
     private $queryBuilderClass;
 
-    function __construct(){
+    public function __construct(){
         $this->config = include(CONFIG.'/database.php');
 
         $connectorClassName = "\\Vovanmix\\CustomAdmin\\Lib\\Database\\".ucfirst($this->config['driver'])."Connector";
