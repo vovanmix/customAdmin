@@ -61,6 +61,11 @@ class CategoryController extends Controller{
      */
     private function input($category, $CategoryRepository){
         $categories = $CategoryRepository->findAll();
+        foreach($categories as $categoryKey => $categoryItem){
+            if($categoryItem->getId() == $category->getId()){
+                unset($categories[$categoryKey]);
+            }
+        }
         return $this->render('input', ['category' => $category, 'categories' => $categories]);
     }
 

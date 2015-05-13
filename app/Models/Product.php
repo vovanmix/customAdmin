@@ -66,4 +66,8 @@ class Product extends Model{
         }
     }
 
+    public function __toString(){
+        return $this->getName();
+    }
+
 }

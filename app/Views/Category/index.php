@@ -9,6 +9,7 @@
         <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Parent</th>
             <th>Created</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -20,6 +21,7 @@
             <tr>
                 <th scope="row"><?=$category->getId();?></th>
                 <td><?=$category->getName();?></td>
+                <td><?=$category->getParent()?></td>
                 <td><?=$category->getCreated_at();?></td>
                 <td><a href="/category/edit/<?=$category->getId();?>">Edit</a></td>
                 <td><a href="/category/delete/<?=$category->getId();?>">Delete</a></td>

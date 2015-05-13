@@ -3,6 +3,7 @@
 namespace Vovanmix\CustomAdmin\Models;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
+use Vovanmix\CustomAdmin\Lib\DependencyInjector;
 
 class Category extends Model{
 
@@ -64,6 +65,19 @@ class Category extends Model{
         else{
             $this->updated_at = date('Y-m-d H:i:s');
         }
+    }
+
+    public function getParent(){
+        if(!empty($this->parent_id)){
+            return DependencyInjector::getInstance()->getClassInstance("\\Vovanmix\\CustomAdmin\\Repositories\\CategoryRepository")->getById($this->parent_id);
+        }
+        else{
+            return NULL;
+        }
+    }
+
+    public function __toString(){
+        return $this->getName();
     }
 
 }
