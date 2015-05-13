@@ -11,5 +11,3 @@ require_once ROOT . '/vendor/autoload.php';
 
 $container = getContainer();
 $container->init();
-
-$container->serve();
