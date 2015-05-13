@@ -65,7 +65,7 @@ class Container{
         $this->request = new Http\Request();
         $this->router = new Http\Router();
         $this->response = new Response();
-        $this->dependencyInjector = new DependencyInjector();
+        $this->dependencyInjector = new DependencyInjector($this);
     }
 
     /**
@@ -86,6 +86,18 @@ class Container{
         $this->response->output();
     }
 
+    public function getRouter(){
+        return $this->router;
+    }
+
+    public function getRequest(){
+        return $this->request;
+    }
+
+    public function getResponse(){
+        return $this->response;
+    }
+
     /**
      * @param HttpException $e
      * @return mixed
@@ -104,9 +116,10 @@ class Container{
      */
     private function callController($route){
 
-        $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.$route->getController();
+        $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.$route->getController().'Controller';
         if(class_exists($controllerName)){
-            $controller = new $controllerName($this);
+            $dependencies = $this->dependencyInjector->getConstructorDependencies($controllerName);
+            $controller = new $controllerName($dependencies);
             $response = $this->callAction($controller, $route);
 
             return $response;
@@ -126,8 +139,8 @@ class Container{
         $actionName = $route->getAction();
 
         if(method_exists($controller, $actionName)){
-            $dependencies = $this->dependencyInjector->getActionDependencies($controller->$actionName);
-            return call_user_func_array($controller->$actionName, $dependencies);
+            $dependencies = $this->dependencyInjector->getActionDependencies($controller, $actionName);
+            return call_user_func_array([$controller, $actionName], $dependencies);
         }
         else{
             throw new HttpNotFoundException();
