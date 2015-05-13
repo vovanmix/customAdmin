@@ -63,11 +63,16 @@ class Container{
 
     public function init(){
         session_start();
-        $this->request = new Http\Request();
-        $this->router = new Http\Router();
-        $this->response = new Response();
+//        $this->request = new Http\Request();
+//        $this->router = new Http\Router();
+//        $this->response = new Response();
         $this->dependencyInjector = DependencyInjector::getInstance();
         $this->dependencyInjector->setContainer($this);
+
+        $this->request = $this->dependencyInjector->getClassInstance("\\Vovanmix\\CustomAdmin\\Lib\\Http\\Request");
+        $this->router = new Http\Router();
+        $this->response = new Response();
+
         $this->view = new View();
     }
 

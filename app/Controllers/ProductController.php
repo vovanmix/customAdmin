@@ -6,7 +6,8 @@ use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\ProductRepository;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
-use \Vovanmix\CustomAdmin\Models\Product;
+use Vovanmix\CustomAdmin\Models\Product;
+use Vovanmix\CustomAdmin\Lib\Http\Request;
 
 class ProductController extends Controller{
 
@@ -33,34 +34,37 @@ class ProductController extends Controller{
 
     /**
      * @param CategoryRepository $CategoryRepository
+     * @param Request $Request
      * @return string
      */
-    public function add(CategoryRepository $CategoryRepository){
+    public function add(CategoryRepository $CategoryRepository, Request $Request){
         $product = $this->createModelInstance("Product");
 
-        return $this->processInput($product, $CategoryRepository, 'persistAdd');
+        return $this->processInput($product, $CategoryRepository, 'persistAdd', $Request);
     }
 
     /**
      * @param int $id
      * @param ProductRepository $ProductRepository
      * @param CategoryRepository $CategoryRepository
+     * @param Request $Request
      * @return string
      */
-    public function edit($id, ProductRepository $ProductRepository, CategoryRepository $CategoryRepository){
+    public function edit($id, ProductRepository $ProductRepository, CategoryRepository $CategoryRepository, Request $Request){
         $product = $ProductRepository->getById($id);
 
-        return $this->processInput($product, $CategoryRepository, 'persistEdit');
+        return $this->processInput($product, $CategoryRepository, 'persistEdit', $Request);
     }
 
     /**
      * @param ModelInterface|Product $product
      * @param CategoryRepository $CategoryRepository
      * @param string $persistMethod
+     * @param Request $Request
      * @return string
      */
-    private function processInput($product, $CategoryRepository, $persistMethod){
-        $post = $this->getContainer()->getRequest()->inputPostAll();
+    private function processInput($product, $CategoryRepository, $persistMethod, $Request){
+        $post = $Request->inputPostAll();
         if(empty($post)){
             return $this->input($product, $CategoryRepository);
         }
@@ -81,12 +85,14 @@ class ProductController extends Controller{
 
     /**
      * @param Product $product
+     * @param Request $Request
      * @return string
      */
-    protected function persistAdd($product){
-        $post = $this->getContainer()->getRequest()->inputPostAll();
+    protected function persistAdd($product, $Request){
+        $post = $Request->inputPostAll();
         $product->fillData($post);
         $product->save();
+        $this->processNewImages($product, $Request);
 
         $this->setFlash('Product was successfully added');
         redirect('/product');
@@ -94,14 +100,33 @@ class ProductController extends Controller{
 
     /**
      * @param Product $product
+     * @param Request $Request
      * @return string
      */
-    protected function persistEdit($product){
-        $post = $this->getContainer()->getRequest()->inputPostAll();
+    protected function persistEdit($product, $Request){
+        $post = $Request->inputPostAll();
         $product->fillData($post);
         $product->update();
+        $this->processNewImages($product, $Request);
+        $this->processRemoveImages($product, $Request);
 
         $this->setFlash('Product was successfully updated');
         redirect('/product');
+    }
+
+    /**
+     * @param Product $product
+     * @param Request $Request
+     */
+    protected function processNewImages($product, $Request){
+        $newImages = $Request->inputPost('newImages');
+    }
+
+    /**
+     * @param Product $product
+     * @param Request $Request
+     */
+    protected function processRemoveImages($product, $Request){
+        $imagesDelete = $Request->inputPost('imagesDelete');
     }
 }

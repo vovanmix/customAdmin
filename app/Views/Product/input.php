@@ -33,13 +33,13 @@
             <?php $images = $product->getImages();?>
             <?php if(!empty($images)){ foreach($images as $image){?>
                 <?php /**@var \Vovanmix\CustomAdmin\Models\ProductImage $image*/ ?>
-                <img src=""/><label><input type="checkbox" name="imageDelete[<?=$image->getId()?>]"/>Delete</label>
+                <img src=""/><label><input type="checkbox" name="imagesDelete[<?=$image->getId()?>]"/>Delete</label>
             <?php }} ?>
 
 
             <div class="form-group newImage">
                 <label>New image
-                    <input type="file" name="newImage[]"/>
+                    <input type="file" name="newImages[]"/>
                 </label>
             </div>
         </div>
