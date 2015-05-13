@@ -47,6 +47,19 @@ class Model{
         return $data;
     }
 
+    /**
+     * @param $data
+     */
+    public function fillData($data){
+        foreach($this as $property => $value) {
+            if(!in_array($property, ['ORM', 'table'])) {
+                if(isset($data[$property])){
+                    $this->{'set'.ucfirst($property)}($value);
+                }
+            }
+        }
+    }
+
     public function save(){
         $data = $this->compactData();
         if(empty($data)){
