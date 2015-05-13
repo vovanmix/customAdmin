@@ -101,11 +101,11 @@ class DependencyInjector{
                 $class = $param->getClass();
 
                 if (!empty($class)) {
-                    $className = $class->getName();
+                    $className = $class->name;//getName();
                     $classInstance = $this->getClassInstance($className);
                     $parameters[] = $classInstance;
                 } else {
-                    $parameters[] = $this->getRouteParameter($param->getName());
+                    $parameters[] = $this->getRouteParameter($param->name);//getName());
                 }
             }
         }

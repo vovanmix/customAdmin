@@ -46,7 +46,7 @@ class Model{
      */
     public function compactData(){
         $data = [];
-        foreach($this as $property => $value) {
+        foreach(get_object_vars($this) as $property => $value) {
             $method = 'get'.ucfirst($property);
             if(method_exists($this, $method) && !in_array($property, $this->foreignFields)) {
                 $propertyValue = $this->$method();
@@ -68,7 +68,7 @@ class Model{
      * @param $data
      */
     public function fillData($data){
-        foreach($this as $property => $value) {
+        foreach(get_object_vars($this) as $property => $value) {
             $method = 'set'.ucfirst($property);
             if(method_exists($this, $method) && !in_array($property, $this->foreignFields)) {
                 if (isset($data[$property])) {
