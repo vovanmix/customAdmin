@@ -12,7 +12,7 @@ class MysqlQueryBuilder implements QueryBuilderInterface{
         if(is_array($value)) {
             $value = reset($value);
         }
-        $value = !empty($value) ? "'" . $value . "'" : (($value === 0 || $value === '0') ? '0' : ($value === '' ? '""' : ($value === false ? 0 : 'NULL')));
+        $value = !empty($value) ? "'" . $value . "'" : (($value === 0 || $value === '0') ? '0' : ($value === false ? 0 : 'NULL'));
         return $value;
     }
 

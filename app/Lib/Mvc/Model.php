@@ -26,7 +26,9 @@ class Model{
     }
 
     public function setId($id){
-        $this->id = $id;
+        if(!empty($id)) {
+            $this->id = $id;
+        }
     }
 
     public function getId(){
@@ -55,6 +57,9 @@ class Model{
             if(!in_array($property, ['ORM', 'table'])) {
                 if(isset($data[$property])){
                     $this->{'set'.ucfirst($property)}($data[$property]);
+                }
+                else{
+                    $this->{'set'.ucfirst($property)}(NULL);
                 }
             }
         }

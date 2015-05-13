@@ -24,12 +24,12 @@ class CategoryController extends Controller{
     /**
      * @return string
      */
-    public function add(){
+    public function add(CategoryRepository $CategoryRepository){
         $category = $this->createModelInstance("Category");
         $post = $this->getContainer()->getRequest()->inputPostAll();
-var_dump($post);die();
+
         if(empty($post)){
-            return $this->inputAdd($category);
+            return $this->input($category, $CategoryRepository);
         }
         else{
             return $this->persistAdd($category);
@@ -46,20 +46,22 @@ var_dump($post);die();
         $category = $CategoryRepository->getById($id);
         $post = $this->getContainer()->getRequest()->inputPostAll();
         if(empty($post)){
-            return $this->inputEdit($id, $category);
+            return $this->input($category, $CategoryRepository);
         }
         else{
-            return $this->persistEdit($id, $category);
+            return $this->persistEdit($category);
         }
 
     }
 
     /**
      * @param Category $category
+     * @param CategoryRepository $CategoryRepository
      * @return string
      */
-    private function inputAdd($category){
-        return $this->render('input', ['category' => $category]);
+    private function input($category, $CategoryRepository){
+        $categories = $CategoryRepository->findAll();
+        return $this->render('input', ['category' => $category, 'categories' => $categories]);
     }
 
     /**
@@ -75,20 +77,10 @@ var_dump($post);die();
     }
 
     /**
-     * @param int $id
      * @param Category $category
      * @return string
      */
-    private function inputEdit($id, $category){
-        return $this->render('input', ['category' => $category]);
-    }
-
-    /**
-     * @param int $id
-     * @param Category $category
-     * @return string
-     */
-    private function persistEdit($id, $category){
+    private function persistEdit($category){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         $category->fillData($post);
         $category->update();
