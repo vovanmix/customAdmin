@@ -17,7 +17,7 @@ build:
     tests:
         override:
             -
-                command: 'phpunit tests'
+                command: 'phpunit app/Tests'
 application:
     environment:
         php:
