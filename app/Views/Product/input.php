@@ -27,13 +27,25 @@
         <textarea class="form-control" id="text" name="text"><?=$product->getText();?></textarea>
     </div>
 
-    <!--
-    <div class="form-group">
-        <label for="exampleInputFile">File input</label>
-        <input type="file" id="exampleInputFile">
-        <p class="help-block">Example block-level help text here.</p>
-      </div>
-      -->
+    <div>
+        <h2>Images</h2>
+        <div class="imagesContainer">
+            <?php $images = $product->getImages();?>
+            <?php if(!empty($images)){ foreach($images as $image){?>
+                <?php /**@var \Vovanmix\CustomAdmin\Models\ProductImage $image*/ ?>
+                <img src=""/><label><input type="checkbox" name="imageDelete[<?=$image->getId()?>]"/>Delete</label>
+            <?php }} ?>
+
+
+            <div class="form-group newImage">
+                <label>New image
+                    <input type="file" name="newImage[]"/>
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-default" onclick="$('.newImage:last').clone().appendTo('.imagesContainer'); return false;">Add new image</button>
+        <br/><br/>
+    </div>
 
     <input type="submit" class="btn btn-default"/>
     <button class="btn btn-default" onclick="history.back()">Cancel</button>
