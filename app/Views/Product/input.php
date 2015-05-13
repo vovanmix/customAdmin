@@ -33,7 +33,9 @@
             <?php $images = $product->getImages();?>
             <?php if(!empty($images)){ foreach($images as $image){?>
                 <?php /**@var \Vovanmix\CustomAdmin\Models\ProductImage $image*/ ?>
-                <img src=""/><label><input type="checkbox" name="imagesDelete[<?=$image->getId()?>]"/>Delete</label>
+                <div>
+                <img style="width: 100px"  class="img-thumbnail" src="/uploads/<?=$image->getFile();?>"/><label><input type="checkbox" value="1" name="imagesDelete[<?=$image->getId()?>]"/>Delete</label>
+                </div>
             <?php }} ?>
 
 

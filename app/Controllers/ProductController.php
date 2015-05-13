@@ -6,6 +6,7 @@ use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\ProductRepository;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
+use Vovanmix\CustomAdmin\Repositories\ProductImageRepository;
 use Vovanmix\CustomAdmin\Models\Product;
 use Vovanmix\CustomAdmin\Models\ProductImage;
 use Vovanmix\CustomAdmin\Lib\Http\Request;
@@ -139,19 +140,21 @@ class ProductController extends Controller{
     protected function processNewImages($product, $Request){
         $newImages = $Request->inputFile('newImages');
 
-        if(isset($newImages['name'])){
-            $newImages = [$newImages];
-        }
-        foreach($newImages as $newImage){
-            if(!empty($newImage['tmp_name'])){
-                /** @var ProductImage $ProductImage */
-                $ProductImage = $this->createModelInstance('ProductImage');
-                $ProductImage->setProduct($product);
-                $ProductImage->generateName($newImage);
+        if(!empty($newImages)) {
+            if (isset($newImages['name'])) {
+                $newImages = [$newImages];
+            }
+            foreach ($newImages as $newImage) {
+                if (!empty($newImage['tmp_name'])) {
+                    /** @var ProductImage $ProductImage */
+                    $ProductImage = $this->createModelInstance('ProductImage');
+                    $ProductImage->setProduct($product);
+                    $ProductImage->generateName($newImage);
 
-                copy($newImage['tmp_name'], WEBROOT.'/uploads/'.$ProductImage->getFile());
+                    copy($newImage['tmp_name'], WEBROOT . '/uploads/' . $ProductImage->getFile());
 
-                $ProductImage->save();
+                    $ProductImage->save();
+                }
             }
         }
     }
@@ -162,5 +165,18 @@ class ProductController extends Controller{
      */
     protected function processRemoveImages($product, $Request){
         $imagesDelete = $Request->inputPost('imagesDelete');
+
+        if(!empty($imagesDelete)) {
+            foreach ($imagesDelete as $imageId => $value) {
+                if (!empty($value)) {
+                    /** @var ProductImage $ProductImage */
+                    $ProductImage = $this->getDependencyInjector()->getClassInstance("\\Vovanmix\\CustomAdmin\\Repositories\\ProductImageRepository")->getById($imageId);
+                    if ($ProductImage->getProduct_id() == $product->getId()) {
+                        unlink(WEBROOT . '/uploads/' . $ProductImage->getFile());
+                        $ProductImage->delete();
+                    }
+                }
+            }
+        }
     }
 }
