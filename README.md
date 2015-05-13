@@ -16,4 +16,5 @@ Featuring:
  - Repositories to work with sets of records
  - Views and Layouts
  - Unit tests
+ - images upload
  - Simple validation
