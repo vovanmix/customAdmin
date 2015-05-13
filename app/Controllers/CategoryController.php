@@ -3,17 +3,25 @@
 namespace Vovanmix\CustomAdmin\Controllers;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
+use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 use \Vovanmix\CustomAdmin\Models\Category;
 
 class CategoryController extends Controller{
 
+    /**
+     * @param CategoryRepository $CategoryRepository
+     * @return string
+     */
     public function index(CategoryRepository $CategoryRepository){
         $categories = $CategoryRepository->findAll();
         return $this->render('index', ['categories' => $categories]);
     }
 
-
+    /**
+     * @param int $id
+     * @param CategoryRepository $CategoryRepository
+     */
     public function delete($id, CategoryRepository $CategoryRepository){
         $category = $CategoryRepository->getById($id);
         $category->delete();
@@ -43,6 +51,12 @@ class CategoryController extends Controller{
         return $this->processInput($category, $CategoryRepository, 'persistEdit');
     }
 
+    /**
+     * @param ModelInterface|Category $category
+     * @param CategoryRepository $CategoryRepository
+     * @param string $persistMethod
+     * @return string
+     */
     private function processInput($category, $CategoryRepository, $persistMethod){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         if(empty($post)){
@@ -54,7 +68,7 @@ class CategoryController extends Controller{
     }
 
     /**
-     * @param Category $category
+     * @param ModelInterface|Category $category
      * @param CategoryRepository $CategoryRepository
      * @return string
      */

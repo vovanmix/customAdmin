@@ -14,14 +14,7 @@ class Product extends Model implements ModelInterface{
     protected $category_id;
     protected $text;
     protected $created_at;
-
-//    protected $images;
-//    protected $relations = ['images' =>
-//        [
-//            'type' => 'one-to-many',
-//            'model' => 'ProductImage'
-//        ]
-//    ];
+    protected $updated_at;
 
     public function getName(){
         return $this->name;
@@ -39,6 +32,10 @@ class Product extends Model implements ModelInterface{
         return $this->created_at;
     }
 
+    public function getUpdated_at(){
+        return $this->updated_at;
+    }
+
     public function setName($name){
         $this->name = $name;
     }
@@ -51,8 +48,24 @@ class Product extends Model implements ModelInterface{
         $this->text = $text;
     }
 
-    public function setCreated_at($created_at){
-        $this->created_at = $created_at;
+    public function setCreated_at($val){
+        if(!empty($val)){
+            $this->created_at = $val;
+        }
+        else{
+            if(empty($this->id)) {
+                $this->created_at = date('Y-m-d H:i:s');
+            }
+        }
+    }
+
+    public function setUpdated_at($val){
+        if(!empty($val)){
+            $this->updated_at = $val;
+        }
+        else{
+            $this->updated_at = date('Y-m-d H:i:s');
+        }
     }
 
     /**
@@ -67,8 +80,20 @@ class Product extends Model implements ModelInterface{
         }
     }
 
+    /**
+     * @return Category
+     */
+    public function getCategory(){
+        if(!empty($this->category_id)){
+            return DependencyInjector::getInstance()->getClassInstance("\\Vovanmix\\CustomAdmin\\Repositories\\CategoryRepository")->getById($this->category_id);
+        }
+        else{
+            return NULL;
+        }
+    }
+
     public function __toString(){
-        return $this->getName();
+        return (string)$this->getName();
     }
 
 }
