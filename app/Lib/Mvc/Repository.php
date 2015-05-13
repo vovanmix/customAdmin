@@ -64,4 +64,18 @@ class Repository{
         return $result;
     }
 
+    /**
+     * @param string $field
+     * @param string $value
+     * @return array
+     */
+    public function findBy($field, $value){
+        $resultsArray = $this->ORM->findBy($this->table, $field, $value);
+        $results = [];
+        foreach($resultsArray as $result){
+            $results[] = $this->createModelInstance($result);
+        }
+        return $results;
+    }
+
 }

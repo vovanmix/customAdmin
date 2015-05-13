@@ -40,7 +40,7 @@ class Model{
         $data = [];
         foreach($this as $property => $value) {
             if(!in_array($property, ['ORM', 'table'])) {
-                $data[$property] = $value;
+                $data[$property] = $this->{'get'.ucfirst($property)}();
             }
         }
 

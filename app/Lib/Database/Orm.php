@@ -36,6 +36,18 @@ class Orm{
     }
 
     /**
+     * @param string $table
+     * @param string $field
+     * @param string $value
+     * @return array
+     */
+    public function findBy($table, $field, $value){
+        $query = $this->queryBuilderClass->findBy($table, $field, $value);
+        $results = $this->connector->getMany($query);
+        return $results;
+    }
+
+    /**
      * @param string$table
      * @param int $id
      * @return array

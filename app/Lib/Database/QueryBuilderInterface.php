@@ -12,6 +12,14 @@ interface QueryBuilderInterface{
 
     /**
      * @param string $table
+     * @param string $field
+     * @param string $value
+     * @return array
+     */
+    public function findBy($table, $field, $value);
+
+    /**
+     * @param string $table
      * @param int $id
      * @return string
      */

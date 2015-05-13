@@ -40,8 +40,8 @@ class DependencyInjector{
 
     /**
      * Returns the *Singleton* instance of this class.
-     * @staticvar Container $instance The *Singleton* instances of this class.
-     * @return Container The *Singleton* instance.
+     * @staticvar DependencyInjector $instance The *Singleton* instances of this class.
+     * @return DependencyInjector The *Singleton* instance.
      */
     public static function getInstance()
     {

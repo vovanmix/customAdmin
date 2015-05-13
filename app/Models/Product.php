@@ -3,6 +3,7 @@
 namespace Vovanmix\CustomAdmin\Models;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
+use Vovanmix\CustomAdmin\Lib\DependencyInjector;
 
 class Product extends Model{
 
@@ -11,6 +12,14 @@ class Product extends Model{
     protected $name;
     protected $category_id;
     protected $text;
+
+//    protected $images;
+//    protected $relations = ['images' =>
+//        [
+//            'type' => 'one-to-many',
+//            'model' => 'ProductImage'
+//        ]
+//    ];
 
     public function getName(){
         return $this->name;
@@ -34,6 +43,18 @@ class Product extends Model{
 
     public function setText($text){
         $this->text = $text;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImages(){
+        if(!empty($this->id)){
+            return DependencyInjector::getInstance()->getClassInstance("\\Vovanmix\\CustomAdmin\\Repositories\\ProductImageRepository")->findBy('product_id', $this->id);
+        }
+        else{
+            return [];
+        }
     }
 
 }

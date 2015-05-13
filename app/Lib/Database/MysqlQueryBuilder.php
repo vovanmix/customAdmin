@@ -23,6 +23,14 @@ class MysqlQueryBuilder implements QueryBuilderInterface{
         return "SELECT * FROM `$table`";
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function findBy($table, $field, $value){
+        return "SELECT * FROM `$table` WHERE $field = '$value'";
+    }
+
     /**
      * @inheritdoc
      */
