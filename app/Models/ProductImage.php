@@ -4,8 +4,9 @@ namespace Vovanmix\CustomAdmin\Models;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
 use Vovanmix\CustomAdmin\Lib\DependencyInjector;
+use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 
-class ProductImage extends Model{
+class ProductImage extends Model implements ModelInterface{
 
     protected $table = 'product_images';
 

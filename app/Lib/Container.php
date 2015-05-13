@@ -148,7 +148,7 @@ class Container{
     }
 
     /**
-     * @param Controller $controller
+     * @param \stdClass $controller
      * @param Route $route
      * @return mixed
      * @throws HttpNotFoundException

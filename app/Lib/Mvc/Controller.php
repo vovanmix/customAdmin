@@ -43,7 +43,7 @@ class Controller{
 
     /**
      * @param string $ModelName
-     * @return \Vovanmix\CustomAdmin\Lib\Mvc\Model
+     * @return ModelInterface
      */
     public function createModelInstance($ModelName){
         return $this->getDependencyInjector()->createClassInstance("\\Vovanmix\\CustomAdmin\\Models\\".$ModelName);

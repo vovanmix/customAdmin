@@ -4,8 +4,9 @@ namespace Vovanmix\CustomAdmin\Models;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
 use Vovanmix\CustomAdmin\Lib\DependencyInjector;
+use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 
-class Category extends Model{
+class Category extends Model implements ModelInterface{
 
     protected $table = 'categories';
 

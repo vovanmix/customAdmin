@@ -3,6 +3,7 @@
 namespace Vovanmix\CustomAdmin\Lib\Mvc;
 
 use Vovanmix\CustomAdmin\Lib\Database\Orm;
+use Vovanmix\CustomAdmin\Lib\DependencyInjector;
 
 /**
  * Class Repository
@@ -26,11 +27,11 @@ class Repository{
 
     /**
      * @param array $data
-     * @return Model
+     * @return ModelInterface
      */
     public function createModelInstance($data){
         $modelClassName = "\\Vovanmix\\CustomAdmin\\Models\\".$this->modelClassName;
-        $modelInstance = \Vovanmix\CustomAdmin\Lib\DependencyInjector::getInstance()->createClassInstance($modelClassName);
+        $modelInstance = DependencyInjector::getInstance()->createClassInstance($modelClassName);
 
         $modelInstance->fillData($data);
 
@@ -51,7 +52,7 @@ class Repository{
 
     /**
      * @param int $id
-     * @return Model
+     * @return ModelInterface
      */
     public function getById($id){
         $resultArray = $this->ORM->getById($this->table, $id);

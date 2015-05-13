@@ -22,19 +22,13 @@ class CategoryController extends Controller{
     }
 
     /**
+     * @param CategoryRepository $CategoryRepository
      * @return string
      */
     public function add(CategoryRepository $CategoryRepository){
         $category = $this->createModelInstance("Category");
-        $post = $this->getContainer()->getRequest()->inputPostAll();
 
-        if(empty($post)){
-            return $this->input($category, $CategoryRepository);
-        }
-        else{
-            return $this->persistAdd($category);
-        }
-
+        return $this->processInput($category, $CategoryRepository, 'persistAdd');
     }
 
     /**
@@ -44,14 +38,18 @@ class CategoryController extends Controller{
      */
     public function edit($id, CategoryRepository $CategoryRepository){
         $category = $CategoryRepository->getById($id);
+
+        return $this->processInput($category, $CategoryRepository, 'persistEdit');
+    }
+
+    private function processInput($category, $CategoryRepository, $persistMethod){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         if(empty($post)){
             return $this->input($category, $CategoryRepository);
         }
         else{
-            return $this->persistEdit($category);
+            return $this->$persistMethod($category);
         }
-
     }
 
     /**
@@ -59,9 +57,10 @@ class CategoryController extends Controller{
      * @param CategoryRepository $CategoryRepository
      * @return string
      */
-    private function input($category, $CategoryRepository){
+    protected function input($category, $CategoryRepository){
         $categories = $CategoryRepository->findAll();
         foreach($categories as $categoryKey => $categoryItem){
+            /** @var Category $categoryItem */
             if($categoryItem->getId() == $category->getId()){
                 unset($categories[$categoryKey]);
             }
@@ -73,7 +72,7 @@ class CategoryController extends Controller{
      * @param Category $category
      * @return string
      */
-    private function persistAdd($category){
+    protected function persistAdd($category){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         $category->fillData($post);
         $category->save();
@@ -85,7 +84,7 @@ class CategoryController extends Controller{
      * @param Category $category
      * @return string
      */
-    private function persistEdit($category){
+    protected function persistEdit($category){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         $category->fillData($post);
         $category->update();
