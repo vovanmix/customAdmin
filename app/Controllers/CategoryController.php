@@ -38,7 +38,7 @@ class CategoryController extends Controller{
     public function add(CategoryRepository $CategoryRepository){
         $category = $this->createModelInstance("Category");
 
-        return $this->processInput($category, $CategoryRepository, 'persistAdd');
+        return $this->processInput($category, $CategoryRepository, 'save');
     }
 
     /**
@@ -49,7 +49,7 @@ class CategoryController extends Controller{
     public function edit($id, CategoryRepository $CategoryRepository){
         $category = $CategoryRepository->getById($id);
 
-        return $this->processInput($category, $CategoryRepository, 'persistEdit');
+        return $this->processInput($category, $CategoryRepository, 'update');
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryController extends Controller{
             return $this->input($category, $CategoryRepository);
         }
         else{
-            return $this->$persistMethod($category, $CategoryRepository);
+            return $this->persist($category, $CategoryRepository, $persistMethod);
         }
     }
 
@@ -87,41 +87,21 @@ class CategoryController extends Controller{
     /**
      * @param Category $category
      * @param CategoryRepository $CategoryRepository
+     * @param string $persistMethod
      * @return null|string
      */
-    protected function persistAdd($category, $CategoryRepository){
+    protected function persist($category, $CategoryRepository, $persistMethod){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         try {
             $category->fillData($post);
-            $category->save();
+            $category->$persistMethod();
         }
         catch(ValidationException $e){
             $this->setFlashError($e->getMessage());
             return $this->input($category, $CategoryRepository);
         }
 
-        $this->setFlash('Category was successfully added');
-        redirect('/category');
-        return null;
-    }
-
-    /**
-     * @param Category $category
-     * @param CategoryRepository $CategoryRepository
-     * @return null|string
-     */
-    protected function persistEdit($category, $CategoryRepository){
-        $post = $this->getContainer()->getRequest()->inputPostAll();
-        try {
-            $category->fillData($post);
-            $category->update();
-        }
-        catch(ValidationException $e){
-            $this->setFlashError($e->getMessage());
-            return $this->input($category, $CategoryRepository);
-        }
-
-        $this->setFlash('Category was successfully updated');
+        $this->setFlash('Category was successfully '.($persistMethod == 'add' ? 'added' : 'updated'));
         redirect('/category');
         return null;
     }

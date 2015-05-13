@@ -42,7 +42,7 @@ class ProductController extends Controller{
     public function add(CategoryRepository $CategoryRepository, Request $Request){
         $product = $this->createModelInstance("Product");
 
-        return $this->processInput($product, $CategoryRepository, 'persistAdd', $Request);
+        return $this->processInput($product, $CategoryRepository, $Request);
     }
 
     /**
@@ -55,23 +55,22 @@ class ProductController extends Controller{
     public function edit($id, ProductRepository $ProductRepository, CategoryRepository $CategoryRepository, Request $Request){
         $product = $ProductRepository->getById($id);
 
-        return $this->processInput($product, $CategoryRepository, 'persistEdit', $Request);
+        return $this->processInput($product, $CategoryRepository, $Request);
     }
 
     /**
      * @param ModelInterface|Product $product
      * @param CategoryRepository $CategoryRepository
-     * @param string $persistMethod
      * @param Request $Request
      * @return string
      */
-    private function processInput($product, $CategoryRepository, $persistMethod, $Request){
+    private function processInput($product, $CategoryRepository, $Request){
         $post = $Request->inputPostAll();
         if(empty($post)){
             return $this->input($product, $CategoryRepository);
         }
         else{
-            return $this->$persistMethod($product, $CategoryRepository, $Request);
+            return $this->persist($product, $CategoryRepository, $Request);
         }
     }
 
@@ -91,11 +90,19 @@ class ProductController extends Controller{
      * @param Request $Request
      * @return null|string
      */
-    protected function persistAdd($product, $CategoryRepository, $Request){
+    protected function persist($product, $CategoryRepository, $Request){
         $post = $Request->inputPostAll();
         try {
             $product->fillData($post);
-            $product->save();
+            if(empty($product->getId())) {
+                $product->save();
+                $flashString = 'added';
+            }
+            else{
+                $product->update();
+                $flashString = 'updated';
+                $this->processRemoveImages($product, $Request);
+            }
             $this->processNewImages($product, $Request);
         }
         catch(ValidationException $e){
@@ -103,31 +110,7 @@ class ProductController extends Controller{
             return $this->input($product, $CategoryRepository);
         }
 
-        $this->setFlash('Product was successfully added');
-        redirect('/product');
-        return null;
-    }
-
-    /**
-     * @param Product $product
-     * @param CategoryRepository $CategoryRepository
-     * @param Request $Request
-     * @return null|string
-     */
-    protected function persistEdit($product, $CategoryRepository, $Request){
-        $post = $Request->inputPostAll();
-        try {
-            $product->fillData($post);
-            $product->update();
-            $this->processNewImages($product, $Request);
-            $this->processRemoveImages($product, $Request);
-        }
-        catch(ValidationException $e){
-            $this->setFlashError($e->getMessage());
-            return $this->input($product, $CategoryRepository);
-        }
-
-        $this->setFlash('Product was successfully updated');
+        $this->setFlash('Product was successfully '.$flashString);
         redirect('/product');
         return null;
     }
