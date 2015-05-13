@@ -62,6 +62,7 @@ class Container{
     }
 
     public function init(){
+        session_start();
         $this->request = new Http\Request();
         $this->router = new Http\Router();
         $this->response = new Response();
@@ -88,6 +89,7 @@ class Container{
 
         $this->response->setContent($responseCode);
         $this->response->output();
+        session_commit();
     }
 
     public function getRouter(){

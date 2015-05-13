@@ -18,6 +18,7 @@ class CategoryController extends Controller{
         $category = $CategoryRepository->getById($id);
         $category->delete();
 
+        $this->setFlash('Category was successfully deleted');
         redirect('/category');
     }
 
@@ -77,6 +78,7 @@ class CategoryController extends Controller{
         $category->fillData($post);
         $category->save();
 
+        $this->setFlash('Category was successfully added');
         redirect('/category');
     }
 
@@ -89,6 +91,7 @@ class CategoryController extends Controller{
         $category->fillData($post);
         $category->update();
 
+        $this->setFlash('Category was successfully updated');
         redirect('/category');
     }
 }

@@ -9,6 +9,7 @@ class Request{
     private $files;
 //    private $cookies;
     private $server;
+    private $session;
 
     public function readSystemInput(){
 
@@ -17,6 +18,7 @@ class Request{
         $this->files = $_FILES;
 //        $this->cookies = filter_input_array(INPUT_COOKIE);
         $this->server = filter_input_array(INPUT_SERVER);
+        $this->session = $_SESSION;
     }
 
     public function setInputGet($get){
@@ -80,6 +82,23 @@ class Request{
      */
     public function getServer($name){
         return isset($this->server[$name]) ? $this->server[$name] : NULL;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getSession($name){
+        return isset($this->session[$name]) ? $this->session[$name] : NULL;
+    }
+
+    /**
+     * @param string $name
+     * @param string $val
+     * @return mixed
+     */
+    public function setSession($name, $val){
+        $this->session[$name] = $_SESSION[$name] = $val;
     }
 
     /**

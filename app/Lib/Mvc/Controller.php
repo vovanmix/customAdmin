@@ -49,4 +49,11 @@ class Controller{
         return $this->getDependencyInjector()->createClassInstance("\\Vovanmix\\CustomAdmin\\Models\\".$ModelName);
     }
 
+    /**
+     * @param string $message
+     */
+    public function setFlash($message){
+        $this->getContainer()->getRequest()->setSession('flash', $message);
+    }
+
 }

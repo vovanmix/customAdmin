@@ -34,6 +34,12 @@
     </header>
 
     <div class="container">
+
+        <?php $flash = getFlash(); ?>
+        <?php if(!empty($flash)){ ?>
+            <div class="alert alert-success" role="alert"><?=$flash?></div>
+        <?php } ?>
+
         <div class="row">
             <?=$content?>
         </div>
