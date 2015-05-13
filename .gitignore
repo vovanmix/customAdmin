@@ -1,6 +1,7 @@
 /.idea/
 /vendor/*
 /webroot/vendor/*
+/webroot/uploads/*
 cache
 composer.lock
 !.gitkeep
