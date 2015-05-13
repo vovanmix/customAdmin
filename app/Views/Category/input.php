@@ -1,7 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: vladimir
- * Date: 5/12/15
- * Time: 11:08 PM
- */
+<h1></h1>
+<form>
+    <input type="submit"/>
+</form>

@@ -7,6 +7,7 @@ use Vovanmix\CustomAdmin\Lib\Http\Response;
 use Vovanmix\CustomAdmin\Lib\Http\Route;
 use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Lib\Exceptions\HttpException;
+use Vovanmix\CustomAdmin\Lib\Mvc\View;
 
 /**
  * Class Container
@@ -15,6 +16,7 @@ use Vovanmix\CustomAdmin\Lib\Exceptions\HttpException;
  * @property Http\Router router
  * @property Http\Response response
  * @property DependencyInjector dependencyInjector
+ * @property View view
  */
 class Container{
 
@@ -22,6 +24,7 @@ class Container{
     private $router;
     private $response;
     private $dependencyInjector;
+    private $view;
 
     /**
      * Protected constructor to prevent creating a new instance of the
@@ -58,32 +61,32 @@ class Container{
         return $instance;
     }
 
-    /**
-     *
-     */
     public function init(){
         $this->request = new Http\Request();
         $this->router = new Http\Router();
         $this->response = new Response();
         $this->dependencyInjector = DependencyInjector::getInstance();
         $this->dependencyInjector->setContainer($this);
+        $this->view = new View();
     }
 
     /**
-     * @throws HttpNotFoundException
+     * @throws HttpException
      */
     public function serve(){
         $this->request->readSystemInput();
         $route = $this->router->getRoute($this->request);
 
         try {
-            $response = $this->callController($route);
+            $actionCode = $this->callController($route);
         }
         catch(HttpException $e){
-            $response = $this->handleException($e);
+            $actionCode = $this->handleException($e);
         }
 
-        $this->response->setContent($response);
+        $responseCode = $this->view->renderLayout($actionCode);
+
+        $this->response->setContent($responseCode);
         $this->response->output();
     }
 
@@ -103,15 +106,24 @@ class Container{
         return $this->dependencyInjector;
     }
 
+    public function getView(){
+        return $this->view;
+    }
+
+    /**
+     * @param $layout
+     */
+    public function setLayout($layout){
+        $this->view->setLayout($layout);
+    }
+
     /**
      * @param HttpException $e
      * @return mixed
      */
     private function handleException($e){
         $this->response->setStatus($e->getStatusCode());
-        return $this->response->getStatus().$e->getMessage();
-//        return $e->getMessage();
-        //todo
+        return $e->getMessage();
     }
 
     /**

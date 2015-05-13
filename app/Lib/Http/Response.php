@@ -34,8 +34,9 @@ class Response{
 
     public function output(){
 
+        http_response_code($this->getStatus());
+
         echo $this->getContent();
-        //todo
     }
 
 }

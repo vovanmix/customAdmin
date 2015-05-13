@@ -15,7 +15,8 @@ class Controller{
         $fullClassName = get_class($this);
         $className = str_replace("Vovanmix\\CustomAdmin\\Controllers\\", "", $fullClassName);
         $classShortName = str_replace("Controller", "", $className);
-        echo "My name is " , $classShortName , "\n";die();
+
+        return $this->getContainer()->getView()->render($classShortName, $view, $parameters);
     }
 
     /**
