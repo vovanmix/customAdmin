@@ -127,7 +127,7 @@ class ProductController extends Controller{
                 /** @var ProductImage $ProductImage */
                 $ProductImage = $this->createModelInstance('ProductImage');
                 $ProductImage->setProduct($product);
-                $ProductImage->generateName();
+                $ProductImage->generateName($newImage);
 
                 copy($newImage['tmp_name'], WEBROOT.'/uploads/'.$ProductImage->getFile());
 

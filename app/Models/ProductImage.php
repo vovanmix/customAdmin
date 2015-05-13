@@ -5,7 +5,7 @@ namespace Vovanmix\CustomAdmin\Models;
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
 use Vovanmix\CustomAdmin\Lib\DependencyInjector;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
-use Vovanmix\CustomAdmin\Models\Product;
+use Vovanmix\CustomAdmin\Lib\Exceptions\ValidationException;
 
 /**
  * Class ProductImage
@@ -56,10 +56,19 @@ class ProductImage extends Model implements ModelInterface{
         $this->setProduct_id($product->getId());
     }
 
-    public function generateName(){
-        $fileName = uniqid($this->product->getName());
+    public function generateName($newImage){
+        $fileName = uniqid($this->product->getName()).$this->getExtension($newImage);
         $this->setFile($fileName);
         return $fileName;
+    }
+
+    public function getExtension($newImage){
+        $type = $newImage['type'];
+        if(in_array($type, ['image/jpeg', 'image/gif', 'image/png'])){
+            return str_replace('image/', '.', $type);
+        }else{
+            throw new ValidationException('File format is wrong!');
+        }
     }
 
 }
