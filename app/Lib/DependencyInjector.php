@@ -105,10 +105,7 @@ class DependencyInjector{
                     if (isset($this->dependencies[$className])) {
                         $classInstance = &$this->dependencies[$className];
                     } else {
-                        $dependencies = $this->getConstructorDependencies($className);
-
-                        $r = new ReflectionClass($className);
-                        $classInstance = $r->newInstanceArgs($dependencies);
+                        $classInstance = $this->createClassInstance($className);
                         $this->dependencies[$className] = &$classInstance;
                     }
                     $parameters[] = $classInstance;
@@ -119,6 +116,19 @@ class DependencyInjector{
         }
 
         return $parameters;
+    }
+
+    /**
+     * @param string $className
+     * @return object
+     */
+    public function createClassInstance($className){
+        $dependencies = $this->getConstructorDependencies($className);
+
+        $r = new ReflectionClass($className);
+        $classInstance = $r->newInstanceArgs($dependencies);
+
+        return $classInstance;
     }
 
     private function getRouteParameter($name){

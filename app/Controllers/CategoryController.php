@@ -3,8 +3,9 @@
 namespace Vovanmix\CustomAdmin\Controllers;
 
 use Vovanmix\CustomAdmin\Models\Category;
+use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 
-class CategoryController{
+class CategoryController extends Controller{
 
     function __construct(){
 
@@ -12,9 +13,15 @@ class CategoryController{
 
     function add(){
 
-//        $category = new Category();
+        /**
+         * @var Category $category
+         */
+        $category = $this->createClassInstance("\\Vovanmix\\CustomAdmin\\Models\\Category");
 
-//        $category->compactData();
+        $category->setName('Hello');
+
+        var_dump( $category->compactData() );
+
         return 'hello';
     }
 

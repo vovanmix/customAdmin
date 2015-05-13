@@ -99,6 +99,10 @@ class Container{
         return $this->response;
     }
 
+    public function getDependencyInjector(){
+        return $this->dependencyInjector;
+    }
+
     /**
      * @param HttpException $e
      * @return mixed
@@ -119,8 +123,9 @@ class Container{
 
         $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.ucfirst($route->getController()).'Controller';
         if(class_exists($controllerName)){
-            $dependencies = $this->dependencyInjector->getConstructorDependencies($controllerName);
-            $controller = new $controllerName($dependencies);
+            $controller = $this->getDependencyInjector()->createClassInstance($controllerName);
+//            $dependencies = $this->dependencyInjector->getConstructorDependencies($controllerName);
+//            $controller = new $controllerName($dependencies);
             $response = $this->callAction($controller, $route);
 
             return $response;
@@ -140,7 +145,7 @@ class Container{
         $actionName = $route->getAction();
 
         if(method_exists($controller, $actionName)){
-            $dependencies = $this->dependencyInjector->getActionDependencies($controller, $actionName);
+            $dependencies = $this->getDependencyInjector()->getActionDependencies($controller, $actionName);
             return call_user_func_array([$controller, $actionName], $dependencies);
         }
         else{
