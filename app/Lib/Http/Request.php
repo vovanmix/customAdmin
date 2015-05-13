@@ -66,7 +66,36 @@ class Request{
      * @return mixed
      */
     public function inputFile($name){
-        return isset($this->files[$name]) ? $this->files[$name] : NULL;
+        if(isset($this->files[$name])){
+            $files = $this->convertFilesArray($name);
+            if(count($files) == 1){
+                return reset($files);
+            }
+            else{
+                return $files;
+            }
+        }
+        else{
+            return NULL;
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    private function convertFilesArray($name){
+        $files = [];
+        foreach($this->files[$name]['name'] as $fileIndex => $fileName){
+            $files[] = [
+                'name' => $this->files[$name]['name'][$fileIndex],
+                'type' => $this->files[$name]['type'][$fileIndex],
+                'tmp_name' => $this->files[$name]['tmp_name'][$fileIndex],
+                'error' => $this->files[$name]['error'][$fileIndex],
+                'size' => $this->files[$name]['size'][$fileIndex],
+            ];
+        }
+        return $files;
     }
 
     /**

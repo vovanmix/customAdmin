@@ -9,6 +9,7 @@ use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 use Vovanmix\CustomAdmin\Models\Product;
 use Vovanmix\CustomAdmin\Models\ProductImage;
 use Vovanmix\CustomAdmin\Lib\Http\Request;
+use Vovanmix\CustomAdmin\Lib\Exceptions\ValidationException;
 
 class ProductController extends Controller{
 
@@ -70,7 +71,7 @@ class ProductController extends Controller{
             return $this->input($product, $CategoryRepository);
         }
         else{
-            return $this->$persistMethod($product, $Request);
+            return $this->$persistMethod($product, $CategoryRepository, $Request);
         }
     }
 
@@ -86,33 +87,49 @@ class ProductController extends Controller{
 
     /**
      * @param Product $product
+     * @param CategoryRepository $CategoryRepository
      * @param Request $Request
-     * @return string
+     * @return null|string
      */
-    protected function persistAdd($product, $Request){
+    protected function persistAdd($product, $CategoryRepository, $Request){
         $post = $Request->inputPostAll();
-        $product->fillData($post);
-        $product->save();
-        $this->processNewImages($product, $Request);
+        try {
+            $product->fillData($post);
+            $product->save();
+            $this->processNewImages($product, $Request);
+        }
+        catch(ValidationException $e){
+            $this->setFlash($e->getMessage());
+            return $this->input($product, $CategoryRepository);
+        }
 
         $this->setFlash('Product was successfully added');
         redirect('/product');
+        return null;
     }
 
     /**
      * @param Product $product
+     * @param CategoryRepository $CategoryRepository
      * @param Request $Request
-     * @return string
+     * @return null|string
      */
-    protected function persistEdit($product, $Request){
+    protected function persistEdit($product, $CategoryRepository, $Request){
         $post = $Request->inputPostAll();
-        $product->fillData($post);
-        $product->update();
-        $this->processNewImages($product, $Request);
-        $this->processRemoveImages($product, $Request);
+        try {
+            $product->fillData($post);
+            $product->update();
+            $this->processNewImages($product, $Request);
+            $this->processRemoveImages($product, $Request);
+        }
+        catch(ValidationException $e){
+            $this->setFlash($e->getMessage());
+            return $this->input($product, $CategoryRepository);
+        }
 
         $this->setFlash('Product was successfully updated');
         redirect('/product');
+        return null;
     }
 
     /**
@@ -122,6 +139,9 @@ class ProductController extends Controller{
     protected function processNewImages($product, $Request){
         $newImages = $Request->inputFile('newImages');
 
+        if(isset($newImages['name'])){
+            $newImages = [$newImages];
+        }
         foreach($newImages as $newImage){
             if(!empty($newImage['tmp_name'])){
                 /** @var ProductImage $ProductImage */

@@ -10,12 +10,14 @@ use Vovanmix\CustomAdmin\Lib\Exceptions\ModelException;
  * @package Vovanmix\CustomAdmin\Lib\Mvc
  * @property ORM $ORM
  * @property string $table
+ * @property array $foreignFields
  */
 class Model{
 
     protected $ORM;
     protected $table;
     protected $id;
+    protected $foreignFields;
 
     public function __construct(Orm &$Orm){
         $this->ORM = $Orm;
@@ -41,8 +43,9 @@ class Model{
     public function compactData(){
         $data = [];
         foreach($this as $property => $value) {
-            if(!in_array($property, ['ORM', 'table'])) {
-                $data[$property] = $this->{'get'.ucfirst($property)}();
+            $method = 'get'.ucfirst($property);
+            if(method_exists($this, $method) && !in_array($property, $this->foreignFields)) {
+                $data[$property] = $this->$method();
             }
         }
 
@@ -54,12 +57,12 @@ class Model{
      */
     public function fillData($data){
         foreach($this as $property => $value) {
-            if(!in_array($property, ['ORM', 'table'])) {
-                if(isset($data[$property])){
-                    $this->{'set'.ucfirst($property)}($data[$property]);
-                }
-                else{
-                    $this->{'set'.ucfirst($property)}(NULL);
+            $method = 'set'.ucfirst($property);
+            if(method_exists($this, $method) && !in_array($property, $this->foreignFields)) {
+                if (isset($data[$property])) {
+                    $this->$method($data[$property]);
+                } else {
+                    $this->$method(NULL);
                 }
             }
         }

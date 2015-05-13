@@ -20,6 +20,8 @@ class ProductImage extends Model implements ModelInterface{
     protected $product_id;
     protected $product;
 
+    protected $foreignFields = ['product'];
+
     public function getFile(){
         return $this->file;
     }

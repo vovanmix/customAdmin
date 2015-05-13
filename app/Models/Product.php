@@ -16,6 +16,8 @@ class Product extends Model implements ModelInterface{
     protected $created_at;
     protected $updated_at;
 
+    protected $foreignFields = ['category', 'images'];
+
     public function getName(){
         return $this->name;
     }
