@@ -107,4 +107,24 @@ class Model{
         $this->ORM->delete($this->table, $this->id);
     }
 
+    public function setCreated_at($val){
+        if(!empty($val)){
+            $this->created_at = $val;
+        }
+        else{
+            if(empty($this->id)) {
+                $this->created_at = date('Y-m-d H:i:s');
+            }
+        }
+    }
+
+    public function setUpdated_at($val){
+        if(!empty($val)){
+            $this->updated_at = $val;
+        }
+        else{
+            $this->updated_at = date('Y-m-d H:i:s');
+        }
+    }
+
 }
