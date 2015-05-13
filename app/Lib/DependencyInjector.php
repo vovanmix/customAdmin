@@ -61,7 +61,7 @@ class DependencyInjector{
     }
 
     /**
-     * @param Controller|string $controller
+     * @param string $controller
      * @return array
      */
     public function getConstructorDependencies($controller){
@@ -75,7 +75,7 @@ class DependencyInjector{
     }
 
     /**
-     * @param Controller|string $controller
+     * @param Controller $controller
      * @param string $actionName
      * @return array
      */
@@ -143,6 +143,10 @@ class DependencyInjector{
         return $classInstance;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     private function getRouteParameter($name){
         return $this->container->getRouter()->getRoute($this->container->getRequest())->{'get'.ucfirst($name)}();
     }
