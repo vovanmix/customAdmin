@@ -1,3 +1,3 @@
-<p class="bg-success">
+<div class="alert alert-success" role="alert">
     Operation was completed successfully!
-</p>
+</div>

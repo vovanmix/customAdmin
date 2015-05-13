@@ -33,11 +33,6 @@ class Repository{
         $modelInstance = \Vovanmix\CustomAdmin\Lib\DependencyInjector::getInstance()->createClassInstance($modelClassName);
 
         $modelInstance->fillData($data);
-//        foreach($data as $dataKey => $dataValue){
-//            $setterMethodName = 'set'.ucfirst($dataKey);
-//            if(method_exists($modelInstance, $setterMethodName))
-//            $modelInstance->$setterMethodName($dataValue);
-//        }
 
         return $modelInstance;
     }

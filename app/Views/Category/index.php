@@ -2,7 +2,9 @@
 /**
  * @var array $categories;
  */
-?><table class="table table-hover">
+?>
+<a class="btn btn-default" href="/category/add/" role="button">Create category</a>
+<table class="table table-hover">
     <thead>
         <tr>
             <th>#</th>

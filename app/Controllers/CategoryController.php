@@ -4,6 +4,7 @@ namespace Vovanmix\CustomAdmin\Controllers;
 
 use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
+use \Vovanmix\CustomAdmin\Models\Category;
 
 class CategoryController extends Controller{
 
@@ -24,13 +25,14 @@ class CategoryController extends Controller{
      * @return string
      */
     public function add(){
-
+        $category = $this->createModelInstance("Category");
         $post = $this->getContainer()->getRequest()->inputPostAll();
+var_dump($post);die();
         if(empty($post)){
-            return $this->inputAdd();
+            return $this->inputAdd($category);
         }
         else{
-            return $this->persistAdd();
+            return $this->persistAdd($category);
         }
 
     }
@@ -41,30 +43,31 @@ class CategoryController extends Controller{
      * @return string
      */
     public function edit($id, CategoryRepository $CategoryRepository){
-
+        $category = $CategoryRepository->getById($id);
         $post = $this->getContainer()->getRequest()->inputPostAll();
         if(empty($post)){
-            return $this->inputEdit($id, $CategoryRepository);
+            return $this->inputEdit($id, $category);
         }
         else{
-            return $this->persistEdit($id, $CategoryRepository);
+            return $this->persistEdit($id, $category);
         }
 
     }
 
     /**
+     * @param Category $category
      * @return string
      */
-    private function inputAdd(){
-        return $this->render('input');
+    private function inputAdd($category){
+        return $this->render('input', ['category' => $category]);
     }
 
     /**
+     * @param Category $category
      * @return string
      */
-    private function persistAdd(){
+    private function persistAdd($category){
         $post = $this->getContainer()->getRequest()->inputPostAll();
-        $category = $this->createClassInstance("\\Vovanmix\\CustomAdmin\\Models\\Category");
         $category->fillData($post);
         $category->save();
 
@@ -73,23 +76,20 @@ class CategoryController extends Controller{
 
     /**
      * @param int $id
-     * @param CategoryRepository $CategoryRepository
+     * @param Category $category
      * @return string
      */
-    private function inputEdit($id, $CategoryRepository){
-        $category = $CategoryRepository->getById($id);
-        $data = $category->compactData();
-        return $this->render('input', $data);
+    private function inputEdit($id, $category){
+        return $this->render('input', ['category' => $category]);
     }
 
     /**
      * @param int $id
-     * @param CategoryRepository $CategoryRepository
+     * @param Category $category
      * @return string
      */
-    private function persistEdit($id, $CategoryRepository){
+    private function persistEdit($id, $category){
         $post = $this->getContainer()->getRequest()->inputPostAll();
-        $category = $CategoryRepository->getById($id);
         $category->fillData($post);
         $category->update();
 
