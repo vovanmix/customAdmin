@@ -135,9 +135,8 @@ class Container{
 
         $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.ucfirst($route->getController()).'Controller';
         if(class_exists($controllerName)){
+            /** @var Controller $controller */
             $controller = $this->getDependencyInjector()->createClassInstance($controllerName);
-//            $dependencies = $this->dependencyInjector->getConstructorDependencies($controllerName);
-//            $controller = new $controllerName($dependencies);
             $response = $this->callAction($controller, $route);
 
             return $response;
@@ -148,7 +147,7 @@ class Container{
     }
 
     /**
-     * @param \stdClass $controller
+     * @param Controller $controller
      * @param Route $route
      * @return mixed
      * @throws HttpNotFoundException
