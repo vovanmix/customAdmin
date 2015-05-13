@@ -3,6 +3,7 @@
 namespace Vovanmix\CustomAdmin\Lib;
 
 use ReflectionMethod;
+use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 
 /**
  * Class DependencyInjector
@@ -17,12 +18,51 @@ class DependencyInjector{
     private $container;
 
     /**
+     * Protected constructor to prevent creating a new instance of the
+     * *Singleton* via the `new` operator from outside of this class.
+     */
+    protected function __construct(){}
+
+    /**
+     * Private clone method to prevent cloning of the instance of the
+     * *Singleton* instance.
+     * @return void
+     */
+    private function __clone(){}
+
+    /**
+     * Private unserialize method to prevent unserializing of the *Singleton*
+     * instance.
+     * @return void
+     */
+    private function __wakeup(){}
+
+    /**
+     * Returns the *Singleton* instance of this class.
+     * @staticvar Container $instance The *Singleton* instances of this class.
+     * @return Container The *Singleton* instance.
+     */
+    public static function getInstance()
+    {
+        static $instance = null;
+        if (null === $instance) {
+            $instance = new static();
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param Container $container
      */
-    function __construct(&$container){
+    function setContainer(&$container){
         $this->container = $container;
     }
 
+    /**
+     * @param Controller $controller
+     * @return array
+     */
     public function getConstructorDependencies($controller){
 
         $classReflection = new \ReflectionClass($controller);
@@ -38,8 +78,8 @@ class DependencyInjector{
     }
 
     /**
-     * @param $controller
-     * @param $actionName
+     * @param Controller $controller
+     * @param string $actionName
      * @return array
      */
     public function getActionDependencies($controller, $actionName){

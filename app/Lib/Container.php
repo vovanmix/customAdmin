@@ -65,7 +65,8 @@ class Container{
         $this->request = new Http\Request();
         $this->router = new Http\Router();
         $this->response = new Response();
-        $this->dependencyInjector = new DependencyInjector($this);
+        $this->dependencyInjector = DependencyInjector::getInstance();
+        $this->dependencyInjector->setContainer($this);
     }
 
     /**
@@ -116,7 +117,7 @@ class Container{
      */
     private function callController($route){
 
-        $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.$route->getController().'Controller';
+        $controllerName = '\\Vovanmix\\CustomAdmin\\Controllers\\'.ucfirst($route->getController()).'Controller';
         if(class_exists($controllerName)){
             $dependencies = $this->dependencyInjector->getConstructorDependencies($controllerName);
             $controller = new $controllerName($dependencies);
