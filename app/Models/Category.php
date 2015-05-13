@@ -2,6 +2,10 @@
 
 namespace Vovanmix\CustomAdmin\Models;
 
-class Category{
+use Vovanmix\CustomAdmin\Lib\Mvc\Model;
+
+class Category extends Model{
+
+    protected $table = 'categories';
 
 }
