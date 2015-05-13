@@ -29,7 +29,7 @@ class Repository{
      * @return Model
      */
     public function createModelInstance($data){
-        $modelClassName = "\\Vovanmix\\CustomAdmin\\Models\\".$this->$modelClassName;
+        $modelClassName = "\\Vovanmix\\CustomAdmin\\Models\\".$this->modelClassName;
 
         $modelInstance = new $modelClassName();
 

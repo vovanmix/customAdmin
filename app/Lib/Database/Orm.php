@@ -22,7 +22,8 @@ class Orm{
         $this->connector = new $connectorClassName($this->config);
         $this->connector->connect();
 
-        $this->queryBuilderClass = "\\Vovanmix\\CustomAdmin\\Lib\\Database\\".ucfirst($this->config['driver'])."QueryBuilder";
+        $queryBuilderClassName = "\\Vovanmix\\CustomAdmin\\Lib\\Database\\".ucfirst($this->config['driver'])."QueryBuilder";
+        $this->queryBuilderClass = new $queryBuilderClassName();
     }
 
     /**

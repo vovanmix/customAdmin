@@ -12,6 +12,7 @@ class Product extends Model{
     protected $name;
     protected $category_id;
     protected $text;
+    protected $created_at;
 
 //    protected $images;
 //    protected $relations = ['images' =>
@@ -33,6 +34,10 @@ class Product extends Model{
         return $this->text;
     }
 
+    public function getCreatedAt(){
+        return $this->created_at;
+    }
+
     public function setName($name){
         $this->name = $name;
     }
@@ -43,6 +48,10 @@ class Product extends Model{
 
     public function setText($text){
         $this->text = $text;
+    }
+
+    public function setCreatedAt($created_at){
+        $this->created_at = $created_at;
     }
 
     /**

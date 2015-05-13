@@ -11,6 +11,7 @@ class Category extends Model{
     protected $name;
     protected $parent_id;
     protected $text;
+    protected $created_at;
 
     public function getName(){
         return $this->name;
@@ -24,6 +25,10 @@ class Category extends Model{
         return $this->text;
     }
 
+    public function getCreatedAt(){
+        return $this->created_at;
+    }
+
     public function setName($name){
         $this->name = $name;
     }
@@ -34,6 +39,10 @@ class Category extends Model{
 
     public function setText($text){
         $this->text = $text;
+    }
+
+    public function setCreatedAt($created_at){
+        $this->created_at = $created_at;
     }
 
 }

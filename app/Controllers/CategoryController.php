@@ -7,6 +7,11 @@ use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 
 class CategoryController extends Controller{
 
+    function index(CategoryRepository $CategoryRepository){
+        $categories = $CategoryRepository->findAll();
+        return $this->render('index', ['categories' => $categories]);
+    }
+
     /**
      * @return string
      */
