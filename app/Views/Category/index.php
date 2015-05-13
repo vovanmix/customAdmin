@@ -3,7 +3,10 @@
  * @var array $categories;
  */
 ?>
-<a class="btn btn-default" href="/category/add/" role="button">Create category</a>
+<a class="btn btn-default" href="/category/add/" role="button">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    Create category
+</a>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -23,8 +26,14 @@
                 <td><?=$category->getName();?></td>
                 <td><?=$category->getParent()?></td>
                 <td><?=$category->getCreated_at();?></td>
-                <td><a href="/category/edit/<?=$category->getId();?>">Edit</a></td>
-                <td><a href="/category/delete/<?=$category->getId();?>">Delete</a></td>
+                <td><a href="/category/edit/<?=$category->getId();?>">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        Edit
+                    </a></td>
+                <td><a href="/category/delete/<?=$category->getId();?>">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Delete
+                    </a></td>
             </tr>
         <? } ?>
     </tbody>
