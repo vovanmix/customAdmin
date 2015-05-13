@@ -2,7 +2,7 @@
 /**
  * @var array $categories;
  */
-?>
+?><h1 class="page-header">Categories</h1>
 <a class="btn btn-default" href="/category/add/" role="button">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     Create category
@@ -14,6 +14,7 @@
             <th>Name</th>
             <th>Parent</th>
             <th>Created</th>
+            <th>Updated</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -26,6 +27,7 @@
                 <td><?=$category->getName();?></td>
                 <td><?=$category->getParent()?></td>
                 <td><?=$category->getCreated_at();?></td>
+                <td><?=$category->getUpdated_at();?></td>
                 <td><a href="/category/edit/<?=$category->getId();?>">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                         Edit

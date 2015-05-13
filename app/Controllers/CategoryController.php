@@ -18,7 +18,7 @@ class CategoryController extends Controller{
         $category = $CategoryRepository->getById($id);
         $category->delete();
 
-        return $this->render('thankyou');
+        redirect('/category');
     }
 
     /**
@@ -77,7 +77,7 @@ class CategoryController extends Controller{
         $category->fillData($post);
         $category->save();
 
-        return $this->render('thankyou');
+        redirect('/category');
     }
 
     /**
@@ -89,6 +89,6 @@ class CategoryController extends Controller{
         $category->fillData($post);
         $category->update();
 
-        return $this->render('thankyou');
+        redirect('/category');
     }
 }

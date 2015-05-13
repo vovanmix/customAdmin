@@ -39,4 +39,9 @@ class Response{
         echo $this->getContent();
     }
 
+    public function redirect($url, $statusCode=302){
+        header('Location: ' . $url, true, $statusCode);
+        die();
+    }
+
 }

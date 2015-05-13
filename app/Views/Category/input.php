@@ -3,7 +3,7 @@
  * @var array $categories;
  * @var \Vovanmix\CustomAdmin\Models\Category $category
  */
-?><h1>Category</h1>
+?><h1 class="page-header">Category <?=$category?></h1>
 <form method="post">
 
     <div class="form-group">
@@ -36,4 +36,5 @@
       -->
 
     <input type="submit" class="btn btn-default"/>
+    <button class="btn btn-default" onclick="history.back()">Cancel</button>
 </form>
