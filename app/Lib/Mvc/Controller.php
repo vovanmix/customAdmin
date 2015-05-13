@@ -2,17 +2,27 @@
 
 namespace Vovanmix\CustomAdmin\Lib\Mvc;
 
+use Vovanmix\CustomAdmin\Lib\Container;
+
 class Controller{
 
-    public function render($view, $parameters){
-
+    /**
+     * @param $view
+     * @param $parameters
+     * @return string
+     */
+    public function render($view, $parameters=[]){
+        $fullClassName = get_class($this);
+        $className = str_replace("Vovanmix\\CustomAdmin\\Controllers\\", "", $fullClassName);
+        $classShortName = str_replace("Controller", "", $className);
+        echo "My name is " , $classShortName , "\n";die();
     }
 
     /**
-     * @return \Vovanmix\CustomAdmin\Lib\Container
+     * @return Container
      */
     public function getContainer(){
-        return \Vovanmix\CustomAdmin\Lib\Container::getInstance();
+        return Container::getInstance();
     }
 
     /**
