@@ -20,7 +20,7 @@
             <nav class="collapse navbar-collapse bs-navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/"><b>Simple Admin</b></a>
+                        <a href="/"><span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span><b>Simple Admin</b></a>
                     </li>
                     <li>
                         <a href="/category/">Categories</a>
