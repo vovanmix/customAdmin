@@ -8,11 +8,11 @@ filter:
 before_commands:
     - 'composer install --no-interaction --no-scripts'
 
-build:
-    tests:
-        override:
-            -
-                command: 'phpunit tests'
+#build:
+#    tests:
+#        override:
+#            -
+#                command: 'phpunit tests'
 application:
     environment:
         php:
