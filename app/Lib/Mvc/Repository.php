@@ -30,14 +30,14 @@ class Repository{
      */
     public function createModelInstance($data){
         $modelClassName = "\\Vovanmix\\CustomAdmin\\Models\\".$this->modelClassName;
+        $modelInstance = \Vovanmix\CustomAdmin\Lib\DependencyInjector::getInstance()->createClassInstance($modelClassName);
 
-        $modelInstance = new $modelClassName();
-
-        foreach($data as $dataKey => $dataValue){
-            $setterMethodName = 'set'.ucfirst($dataKey);
-            if(method_exists($modelInstance, $setterMethodName))
-            $modelInstance->$setterMethodName($dataValue);
-        }
+        $modelInstance->fillData($data);
+//        foreach($data as $dataKey => $dataValue){
+//            $setterMethodName = 'set'.ucfirst($dataKey);
+//            if(method_exists($modelInstance, $setterMethodName))
+//            $modelInstance->$setterMethodName($dataValue);
+//        }
 
         return $modelInstance;
     }

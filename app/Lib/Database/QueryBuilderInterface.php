@@ -40,4 +40,11 @@ interface QueryBuilderInterface{
      */
     public function update($table, $id, $data);
 
+    /**
+     * @param string $table
+     * @param int $id
+     * @return mixed
+     */
+    public function delete($table, $id);
+
 }

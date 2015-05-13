@@ -7,15 +7,23 @@ use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 
 class CategoryController extends Controller{
 
-    function index(CategoryRepository $CategoryRepository){
+    public function index(CategoryRepository $CategoryRepository){
         $categories = $CategoryRepository->findAll();
         return $this->render('index', ['categories' => $categories]);
+    }
+
+
+    public function delete($id, CategoryRepository $CategoryRepository){
+        $category = $CategoryRepository->getById($id);
+        $category->delete();
+
+        return $this->render('thankyou');
     }
 
     /**
      * @return string
      */
-    function add(){
+    public function add(){
 
         $post = $this->getContainer()->getRequest()->inputPostAll();
         if(empty($post)){
@@ -28,16 +36,33 @@ class CategoryController extends Controller{
     }
 
     /**
+     * @param int $id
+     * @param CategoryRepository $CategoryRepository
      * @return string
      */
-    function inputAdd(){
+    public function edit($id, CategoryRepository $CategoryRepository){
+
+        $post = $this->getContainer()->getRequest()->inputPostAll();
+        if(empty($post)){
+            return $this->inputEdit($id, $CategoryRepository);
+        }
+        else{
+            return $this->persistEdit($id, $CategoryRepository);
+        }
+
+    }
+
+    /**
+     * @return string
+     */
+    private function inputAdd(){
         return $this->render('input');
     }
 
     /**
      * @return string
      */
-    function persistAdd(){
+    private function persistAdd(){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         $category = $this->createClassInstance("\\Vovanmix\\CustomAdmin\\Models\\Category");
         $category->fillData($post);
@@ -51,24 +76,7 @@ class CategoryController extends Controller{
      * @param CategoryRepository $CategoryRepository
      * @return string
      */
-    function edit($id, CategoryRepository $CategoryRepository){
-
-        $post = $this->getContainer()->getRequest()->inputPostAll();
-        if(empty($post)){
-            return $this->inputEdit($id, $CategoryRepository);
-        }
-        else{
-            return $this->persistEdit($id, $CategoryRepository);
-        }
-
-    }
-
-    /**
-     * @param int $id
-     * @param CategoryRepository $CategoryRepository
-     * @return string
-     */
-    function inputEdit($id, $CategoryRepository){
+    private function inputEdit($id, $CategoryRepository){
         $category = $CategoryRepository->getById($id);
         $data = $category->compactData();
         return $this->render('input', $data);
@@ -79,7 +87,7 @@ class CategoryController extends Controller{
      * @param CategoryRepository $CategoryRepository
      * @return string
      */
-    function persistEdit($id, $CategoryRepository){
+    private function persistEdit($id, $CategoryRepository){
         $post = $this->getContainer()->getRequest()->inputPostAll();
         $category = $CategoryRepository->getById($id);
         $category->fillData($post);
@@ -87,5 +95,4 @@ class CategoryController extends Controller{
 
         return $this->render('thankyou');
     }
-
 }

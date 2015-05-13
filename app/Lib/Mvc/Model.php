@@ -54,7 +54,7 @@ class Model{
         foreach($this as $property => $value) {
             if(!in_array($property, ['ORM', 'table'])) {
                 if(isset($data[$property])){
-                    $this->{'set'.ucfirst($property)}($value);
+                    $this->{'set'.ucfirst($property)}($data[$property]);
                 }
             }
         }
@@ -78,6 +78,13 @@ class Model{
             throw new ModelException('No Data Provided When Update Called!');
         }
         $this->ORM->update($this->table, $this->id, $data);
+    }
+
+    public function delete(){
+        if(empty($this->id)){
+            throw new ModelException('No Id Provided When Delete Called!');
+        }
+        $this->ORM->delete($this->table, $this->id);
     }
 
 }

@@ -81,4 +81,13 @@ class Orm{
         $this->connector->execute($query);
     }
 
+    /**
+     * @param string $table
+     * @param int $id
+     */
+    public function delete($table, $id){
+        $query = $this->queryBuilderClass->delete($table, $id);
+        $this->connector->execute($query);
+    }
+
 }

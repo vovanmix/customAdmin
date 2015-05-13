@@ -74,4 +74,11 @@ class MysqlQueryBuilder implements QueryBuilderInterface{
         return $q;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function delete($table, $id){
+        return "DELETE FROM `$table` WHERE `id` = '$id'";
+    }
+
 }

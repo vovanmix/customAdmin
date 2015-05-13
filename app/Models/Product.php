@@ -34,7 +34,7 @@ class Product extends Model{
         return $this->text;
     }
 
-    public function getCreatedAt(){
+    public function getCreated_at(){
         return $this->created_at;
     }
 
@@ -50,7 +50,7 @@ class Product extends Model{
         $this->text = $text;
     }
 
-    public function setCreatedAt($created_at){
+    public function setCreated_at($created_at){
         $this->created_at = $created_at;
     }
 
