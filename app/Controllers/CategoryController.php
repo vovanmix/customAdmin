@@ -10,7 +10,11 @@ class CategoryController{
 
     }
 
-    function add($id, Category $category){
+    function add(){
+
+//        $category = new Category();
+
+//        $category->compactData();
         return 'hello';
     }
 

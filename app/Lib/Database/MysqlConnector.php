@@ -21,7 +21,23 @@ class MysqlConnector implements ConnectorInterface{
      * @param array $config
      */
     public function __construct($config){
-        $this->config = $config;
+        $this->config = $this->fillDefaultConfig($config);
+    }
+
+    private function fillDefaultConfig($config){
+
+        if(empty($config)){
+            $config = [];
+        }
+
+        $defaultConfig = [
+            'charset' => 'utf8',
+            'host' => 'localhost',
+            'user' => 'root',
+            'password' => 'root',
+        ];
+
+        return array_replace($defaultConfig, $config);
     }
 
     /**

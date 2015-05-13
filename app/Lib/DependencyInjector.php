@@ -3,6 +3,7 @@
 namespace Vovanmix\CustomAdmin\Lib;
 
 use ReflectionMethod;
+use ReflectionClass;
 use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 
 /**
@@ -60,7 +61,7 @@ class DependencyInjector{
     }
 
     /**
-     * @param Controller $controller
+     * @param Controller|string $controller
      * @return array
      */
     public function getConstructorDependencies($controller){
@@ -69,22 +70,16 @@ class DependencyInjector{
         $ref = $classReflection->getConstructor();
 
         $parameters = $this->getParameters($ref);
-//        foreach( $ref->getParameters() as $param) {
-//            var_dump($param);
-//            echo $param.'<br>';
-//        }
 
         return $parameters;
     }
 
     /**
-     * @param Controller $controller
+     * @param Controller|string $controller
      * @param string $actionName
      * @return array
      */
     public function getActionDependencies($controller, $actionName){
-
-        //todo: analyse
 
         $ref = new ReflectionMethod($controller, $actionName);
 
@@ -111,7 +106,9 @@ class DependencyInjector{
                         $classInstance = &$this->dependencies[$className];
                     } else {
                         $dependencies = $this->getConstructorDependencies($className);
-                        $classInstance = new $className($dependencies);
+
+                        $r = new ReflectionClass($className);
+                        $classInstance = $r->newInstanceArgs($dependencies);
                         $this->dependencies[$className] = &$classInstance;
                     }
                     $parameters[] = $classInstance;

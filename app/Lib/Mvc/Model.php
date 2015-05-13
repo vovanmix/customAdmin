@@ -37,9 +37,14 @@ class Model{
      * @return array
      */
     public function compactData(){
-        //todo
+        $data = [];
+        foreach($this as $property => $value) {
+            if(!in_array($property, ['ORM', 'table'])) {
+                $data[$property] = $value;
+            }
+        }
 
-        return [];
+        return $data;
     }
 
     public function save(){
