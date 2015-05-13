@@ -26,8 +26,8 @@ interface QueryBuilderInterface{
 
     /**
      * @param string $table
-     * @param array $id
-     * @param string $data
+     * @param int $id
+     * @param array $data
      * @return string
      */
     public function update($table, $id, $data);
