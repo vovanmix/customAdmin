@@ -5,13 +5,20 @@ namespace Vovanmix\CustomAdmin\Models;
 use Vovanmix\CustomAdmin\Lib\Mvc\Model;
 use Vovanmix\CustomAdmin\Lib\DependencyInjector;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
+use Vovanmix\CustomAdmin\Models\Product;
 
+/**
+ * Class ProductImage
+ * @package Vovanmix\CustomAdmin\Models
+ * @property Product product
+ */
 class ProductImage extends Model implements ModelInterface{
 
     protected $table = 'product_images';
 
     protected $file;
     protected $product_id;
+    protected $product;
 
     public function getFile(){
         return $this->file;
@@ -30,7 +37,7 @@ class ProductImage extends Model implements ModelInterface{
     }
 
     /**
-     * @return \Vovanmix\CustomAdmin\Models\Product|null
+     * @return Product|null
      */
     public function getProduct(){
         if(!empty($this->product_id)){
@@ -39,6 +46,20 @@ class ProductImage extends Model implements ModelInterface{
         else{
             return NULL;
         }
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function setProduct($product){
+        $this->product = $product;
+        $this->setProduct_id($product->getId());
+    }
+
+    public function generateName(){
+        $fileName = uniqid($this->product->getName());
+        $this->setFile($fileName);
+        return $fileName;
     }
 
 }

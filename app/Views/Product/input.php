@@ -4,7 +4,7 @@
  * @var \Vovanmix\CustomAdmin\Models\Product $product
  */
 ?><h1 class="page-header">Product <?=$product?></h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="name">Name</label>

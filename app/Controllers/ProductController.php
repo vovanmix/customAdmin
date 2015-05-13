@@ -7,6 +7,7 @@ use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\ProductRepository;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 use Vovanmix\CustomAdmin\Models\Product;
+use Vovanmix\CustomAdmin\Models\ProductImage;
 use Vovanmix\CustomAdmin\Lib\Http\Request;
 
 class ProductController extends Controller{
@@ -69,7 +70,7 @@ class ProductController extends Controller{
             return $this->input($product, $CategoryRepository);
         }
         else{
-            return $this->$persistMethod($product);
+            return $this->$persistMethod($product, $Request);
         }
     }
 
@@ -119,7 +120,20 @@ class ProductController extends Controller{
      * @param Request $Request
      */
     protected function processNewImages($product, $Request){
-        $newImages = $Request->inputPost('newImages');
+        $newImages = $Request->inputFile('newImages');
+
+        foreach($newImages as $newImage){
+            if(!empty($newImage['tmp_name'])){
+                /** @var ProductImage $ProductImage */
+                $ProductImage = $this->createModelInstance('ProductImage');
+                $ProductImage->setProduct($product);
+                $ProductImage->generateName();
+
+                copy($newImage['tmp_name'], WEBROOT.'/uploads/'.$ProductImage->getFile());
+
+                $ProductImage->save();
+            }
+        }
     }
 
     /**

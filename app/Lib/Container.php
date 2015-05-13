@@ -69,7 +69,7 @@ class Container{
         $this->dependencyInjector = DependencyInjector::getInstance();
         $this->dependencyInjector->setContainer($this);
 
-        $this->request = $this->dependencyInjector->getClassInstance("\\Vovanmix\\CustomAdmin\\Lib\\Http\\Request");
+        $this->request = $this->dependencyInjector->getClassInstance('Vovanmix\CustomAdmin\Lib\Http\Request');
         $this->router = new Http\Router();
         $this->response = new Response();
 
