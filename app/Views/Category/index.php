@@ -19,8 +19,8 @@
         </tr>
     </thead>
     <tbody>
-        <? foreach($categories as $category){ ?>
-            <? /**@var \Vovanmix\CustomAdmin\Models\Category $category*/ ?>
+        <?php foreach($categories as $category){ ?>
+            <?php /**@var \Vovanmix\CustomAdmin\Models\Category $category*/ ?>
             <tr>
                 <th scope="row"><?=$category->getId();?></th>
                 <td><?=$category->getName();?></td>
@@ -35,6 +35,6 @@
                         Delete
                     </a></td>
             </tr>
-        <? } ?>
+        <?php } ?>
     </tbody>
 </table>

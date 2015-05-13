@@ -14,11 +14,11 @@
     <div class="form-group">
         <label for="exampleInputEmail1">Parent Category</label>
         <select class="form-control" name="parent_id">
-            <option <? if(empty($category->getParent_id())){ ?>selected="selected"<? } ?> value="">No parent</option>
-            <? foreach($categories as $categoryItem){ ?>
-                <? /**@var \Vovanmix\CustomAdmin\Models\Category $categoryItem*/ ?>
-                <option <? if($category->getParent_id() == $categoryItem->getId()){ ?>selected="selected"<? } ?> value="<?=$categoryItem->getId();?>"><?=$categoryItem->getName();?></option>
-            <? } ?>
+            <option <?php if(empty($category->getParent_id())){ ?>selected="selected"<?php } ?> value="">No parent</option>
+            <?php foreach($categories as $categoryItem){ ?>
+                <?php /**@var \Vovanmix\CustomAdmin\Models\Category $categoryItem*/ ?>
+                <option <?php if($category->getParent_id() == $categoryItem->getId()){ ?>selected="selected"<?php } ?> value="<?=$categoryItem->getId();?>"><?=$categoryItem->getName();?></option>
+            <?php } ?>
         </select>
     </div>
 
