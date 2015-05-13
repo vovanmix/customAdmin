@@ -13,11 +13,11 @@ checks:
         code_rating: true
         duplication: true
 
-build:
-    tests:
-        override:
-            -
-                command: 'phpunit app/Tests'
+#build:
+#    tests:
+#        override:
+#            -
+#                command: 'phpunit app/Tests'
 application:
     environment:
         php:
