@@ -17,6 +17,7 @@ class Category extends Model implements ModelInterface{
     protected $updated_at;
 
     protected $foreignFields = ['parent'];
+    protected $required = ['name'];
 
     public function getName(){
         return $this->name;

@@ -17,6 +17,7 @@ class Product extends Model implements ModelInterface{
     protected $updated_at;
 
     protected $foreignFields = ['category', 'images'];
+    protected $required = ['category_id', 'name'];
 
     public function getName(){
         return $this->name;

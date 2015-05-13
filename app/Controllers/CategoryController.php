@@ -6,6 +6,7 @@ use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
 use \Vovanmix\CustomAdmin\Models\Category;
+use Vovanmix\CustomAdmin\Lib\Exceptions\ValidationException;
 
 class CategoryController extends Controller{
 
@@ -63,7 +64,7 @@ class CategoryController extends Controller{
             return $this->input($category, $CategoryRepository);
         }
         else{
-            return $this->$persistMethod($category);
+            return $this->$persistMethod($category, $CategoryRepository);
         }
     }
 
@@ -85,27 +86,43 @@ class CategoryController extends Controller{
 
     /**
      * @param Category $category
-     * @return string
+     * @param CategoryRepository $CategoryRepository
+     * @return null|string
      */
-    protected function persistAdd($category){
+    protected function persistAdd($category, $CategoryRepository){
         $post = $this->getContainer()->getRequest()->inputPostAll();
-        $category->fillData($post);
-        $category->save();
+        try {
+            $category->fillData($post);
+            $category->save();
+        }
+        catch(ValidationException $e){
+            $this->setFlashError($e->getMessage());
+            return $this->input($category, $CategoryRepository);
+        }
 
         $this->setFlash('Category was successfully added');
         redirect('/category');
+        return null;
     }
 
     /**
      * @param Category $category
-     * @return string
+     * @param CategoryRepository $CategoryRepository
+     * @return null|string
      */
-    protected function persistEdit($category){
+    protected function persistEdit($category, $CategoryRepository){
         $post = $this->getContainer()->getRequest()->inputPostAll();
-        $category->fillData($post);
-        $category->update();
+        try {
+            $category->fillData($post);
+            $category->update();
+        }
+        catch(ValidationException $e){
+            $this->setFlashError($e->getMessage());
+            return $this->input($category, $CategoryRepository);
+        }
 
         $this->setFlash('Category was successfully updated');
         redirect('/category');
+        return null;
     }
 }

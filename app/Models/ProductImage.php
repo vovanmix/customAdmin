@@ -21,6 +21,7 @@ class ProductImage extends Model implements ModelInterface{
     protected $product;
 
     protected $foreignFields = ['product'];
+    protected $required = ['product_id', 'file'];
 
     public function getFile(){
         return $this->file;

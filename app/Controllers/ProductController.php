@@ -6,7 +6,6 @@ use Vovanmix\CustomAdmin\Lib\Mvc\Controller;
 use Vovanmix\CustomAdmin\Lib\Mvc\ModelInterface;
 use Vovanmix\CustomAdmin\Repositories\ProductRepository;
 use Vovanmix\CustomAdmin\Repositories\CategoryRepository;
-use Vovanmix\CustomAdmin\Repositories\ProductImageRepository;
 use Vovanmix\CustomAdmin\Models\Product;
 use Vovanmix\CustomAdmin\Models\ProductImage;
 use Vovanmix\CustomAdmin\Lib\Http\Request;
@@ -100,7 +99,7 @@ class ProductController extends Controller{
             $this->processNewImages($product, $Request);
         }
         catch(ValidationException $e){
-            $this->setFlash($e->getMessage());
+            $this->setFlashError($e->getMessage());
             return $this->input($product, $CategoryRepository);
         }
 
@@ -124,7 +123,7 @@ class ProductController extends Controller{
             $this->processRemoveImages($product, $Request);
         }
         catch(ValidationException $e){
-            $this->setFlash($e->getMessage());
+            $this->setFlashError($e->getMessage());
             return $this->input($product, $CategoryRepository);
         }
 

@@ -13,3 +13,9 @@ function getFlash(){
     getContainer()->getRequest()->setSession('flash', NULL);
     return $flash;
 }
+
+function getFlashError(){
+    $flash = getContainer()->getRequest()->getSession('flashError');
+    getContainer()->getRequest()->setSession('flashError', NULL);
+    return $flash;
+}

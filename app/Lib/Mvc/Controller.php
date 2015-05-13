@@ -56,4 +56,14 @@ class Controller{
         $this->getContainer()->getRequest()->setSession('flash', $message);
     }
 
+    /**
+     * @param string $message
+     */
+    public function setFlashError($message){
+        $this->getContainer()->getRequest()->setSession('flashError', $message);
+    }
+
+
+
+
 }

@@ -4,6 +4,7 @@ namespace Vovanmix\CustomAdmin\Lib\Mvc;
 
 use Vovanmix\CustomAdmin\Lib\Database\Orm;
 use Vovanmix\CustomAdmin\Lib\Exceptions\ModelException;
+use Vovanmix\CustomAdmin\Lib\Exceptions\ValidationException;
 
 /**
  * Class Model
@@ -11,6 +12,7 @@ use Vovanmix\CustomAdmin\Lib\Exceptions\ModelException;
  * @property ORM $ORM
  * @property string $table
  * @property array $foreignFields
+ * @property array $required
  */
 class Model{
 
@@ -18,6 +20,7 @@ class Model{
     protected $table;
     protected $id;
     protected $foreignFields;
+    protected $required;
 
     public function __construct(Orm &$Orm){
         $this->ORM = $Orm;
@@ -39,17 +42,26 @@ class Model{
 
     /**
      * @return array
+     * @throws ValidationException
      */
     public function compactData(){
         $data = [];
         foreach($this as $property => $value) {
             $method = 'get'.ucfirst($property);
             if(method_exists($this, $method) && !in_array($property, $this->foreignFields)) {
-                $data[$property] = $this->$method();
+                $propertyValue = $this->$method();
+                $this->validate($property, $propertyValue);
+                $data[$property] = $propertyValue;
             }
         }
 
         return $data;
+    }
+
+    private function validate($property, $propertyValue){
+        if(in_array($property, $this->required) && empty($propertyValue)){
+            throw new ValidationException('Field '.$property.' should not be left blank!');
+        }
     }
 
     /**

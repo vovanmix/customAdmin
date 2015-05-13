@@ -40,6 +40,11 @@
             <div class="alert alert-success" role="alert"><?=$flash?></div>
         <?php } ?>
 
+        <?php $flash = getFlashError(); ?>
+        <?php if(!empty($flash)){ ?>
+            <div class="alert alert-danger" role="alert"><?=$flash?></div>
+        <?php } ?>
+
         <div class="row">
             <?=$content?>
         </div>
